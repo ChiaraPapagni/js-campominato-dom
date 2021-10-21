@@ -15,14 +15,14 @@ Al termine della partita il software deve scoprire tutte le bombe e comunicare i
 
 
 //Seleziono elementi dalla DOM
-const container = document.querySelector('.container');
+const containerDom = document.querySelector('.container');
 const levelDom = document.getElementById('level');
 const play = document.getElementById('play');
-const message = document.querySelector('.message');
+const messageDom = document.querySelector('.message');
 const cells = document.getElementsByClassName('cell');
 
 let bombs = [];
-let grid = checkLevel(levelDom);
+let grid = checkLevel(levelDom, containerDom);
 
 //Inizializzo il punteggio
 let score = 0;
@@ -32,7 +32,7 @@ let busyCells = [];
 
 
 //Funzione che controlla il livello scelto
-function checkLevel(level) {
+function checkLevel(level, container) {
 
     let griglia = 0;
 
@@ -53,13 +53,13 @@ function checkLevel(level) {
 }
 
 //Funzione che crea la griglia
-function createGrid(containerDom, messageDom) {
+function createGrid(container, message) {
 
-    grid = checkLevel(levelDom);
+    grid = checkLevel(levelDom, containerDom);
     bombs = generateBombs(grid);
 
-    messageDom.innerHTML = '';
-    containerDom.innerHTML = '';
+    message.innerHTML = '';
+    container.innerHTML = '';
     score = 0;
     busyCells = [];
 
@@ -69,7 +69,7 @@ function createGrid(containerDom, messageDom) {
         //Creo elemento DOM
         const div = document.createElement('div');
         div.className = 'cell';
-        containerDom.append(div);
+        container.append(div);
 
         //Scrivo in ogni div l'indice
         div.innerHTML = i;
@@ -93,7 +93,7 @@ function handelClick() {
 
     if (isBomb(cell_number, bombs)) {
         this.className += ' red';
-        message.innerHTML = `Hai calpestato una bomba! Il tuo punteggio è: ${score}`;
+        messageDom.innerHTML = `Hai calpestato una bomba! Il tuo punteggio è: ${score}`;
         endGame();
     } else if (!this.classList.contains('blue')) {
         this.className += ' blue';
@@ -102,7 +102,7 @@ function handelClick() {
     }
     if (grid - busyCells.length == bombs.length) {
         endGame();
-        message.innerHTML = `Hai Vinto! Non hai calpestato nessuna bomba! Il tuo punteggio è: ${score}`;
+        messageDom.innerHTML = `Hai Vinto! Non hai calpestato nessuna bomba! Il tuo punteggio è: ${score}`;
     }
 }
 
@@ -138,7 +138,8 @@ function generateBombs(grid) {
 //Funzione che mostra tutte le celle bomba
 function showBombs() {
     for (let i = 0; i < bombs.length; i++) {
-        cells[bombs[i]].classList.add('red');
+        let bombIndex = bombs[i] - 1;
+        cells[bombIndex].classList.add('red');
     }
 }
 
@@ -156,5 +157,5 @@ function endGame() {
 
 //Ascolto l'evento click sul button e genero la griglia
 play.addEventListener('click', function () {
-    createGrid(container, message);
+    createGrid(containerDom, messageDom);
 });
