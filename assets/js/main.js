@@ -103,7 +103,6 @@ function handelClick() {
         endGame();
         message.innerHTML = `Hai Vinto! Non hai calpestato nessuna bomba! Il tuo punteggio è: ${score}`;
     }
-    console.log(grid - busyCells.length, 'Punti: ' + score);
 }
 
 //Funzione che verifica se una cella è una bomba o no
@@ -164,10 +163,3 @@ function endGame() {
 play.addEventListener('click', function () {
     createGrid(container, message);
 });
-
-
-
-/*
-creare una funzione showBombs per mostrare tutte le bombe
-    se gli elementi hanno la classe bomba devo mostrarli
-*/
