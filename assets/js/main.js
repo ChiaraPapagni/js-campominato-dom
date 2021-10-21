@@ -18,6 +18,17 @@ Al termine della partita il software deve scoprire tutte le bombe e comunicare i
 const container = document.querySelector('.container');
 const levelDom = document.getElementById('level');
 const play = document.getElementById('play');
+const message = document.querySelector('.message');
+
+let bombs = [];
+let grid = checkLevel(levelDom);
+
+//Inizializzo il punteggio
+let score = 0;
+
+//Creo array celle occupate
+let busyCells = [];
+
 
 //Funzione che controlla il livello scelto
 function checkLevel(level) {
@@ -28,6 +39,7 @@ function checkLevel(level) {
     //in base a quello cambio il range massimo di griglia
     if (level.value == 'level_one') {
         griglia = 100;
+        container.style.width = '800px';
     } else if (level.value == 'level_two') {
         griglia = 81;
         container.style.width = '720px';
@@ -39,16 +51,16 @@ function checkLevel(level) {
     return griglia;
 }
 
-
-let grid = checkLevel(levelDom);
-const bombs = generateBombs(grid);
-
-
 //Funzione che crea la griglia
-function createGrid(containerDom) {
+function createGrid(containerDom, messageDom) {
 
     grid = checkLevel(levelDom);
+    bombs = generateBombs(grid);
+
+    messageDom.innerHTML = '';
     containerDom.innerHTML = '';
+    score = 0;
+    busyCells = [];
 
     //Ciclo da 1 fino al range massimo scelto
     for (let i = 1; i <= grid; i++) {
@@ -73,16 +85,25 @@ function createGrid(containerDom) {
 
 }
 
-let score = 0;
+
 //Funzione che prende il contenuto della cella
 function handelClick() {
     const cell_number = parseInt(this.innerText);
+
     if (isBomb(cell_number, bombs)) {
         this.className += ' red';
+        message.innerHTML = `Hai calpestato una bomba! Il tuo punteggio è: ${score}`;
+        endGame();
     } else if (!this.classList.contains('blue')) {
         this.className += ' blue';
+        busyCells.push(cell_number);
         score++;
     }
+    if (grid - busyCells.length == bombs.length) {
+        endGame();
+        message.innerHTML = `Hai Vinto! Non hai calpestato nessuna bomba! Il tuo punteggio è: ${score}`;
+    }
+    console.log(grid - busyCells.length, 'Punti: ' + score);
 }
 
 //Funzione che verifica se una cella è una bomba o no
@@ -93,6 +114,7 @@ function isBomb(cell_number, bombs) {
     }
     return false;
 }
+
 
 //Funzione che genera numero casuale
 function generateRandomNumber(min, max) {
@@ -113,16 +135,39 @@ function generateBombs(grid) {
     return bombs;
 }
 
+function showBombs() {
+    //Seleziono tutti gli elementi con classe red
+    const bombs_to_show = document.getElementsByClassName('bomb');
+    //Scorro le celle
+    for (let i = 0; i < bombs_to_show.length; i++) {
+        //const element = bombs_to_show[i];
+        //element.classList.add('red');
+        bombs_to_show[i].classList.add('red');
+    }
+}
+
+
+//Funzione che termina il gioco
+function endGame() {
+    //Seleziono tutti gli elementi con classe cell
+    const cells = document.getElementsByClassName('cell');
+    //Scorro le celle
+    for (let i = 0; i < cells.length; i++) {
+        const element = cells[i];
+        element.removeEventListener('click', handelClick);
+    }
+    showBombs();
+}
+
 
 //Ascolto l'evento click sul button e genero la griglia
 play.addEventListener('click', function () {
-    createGrid(container);
+    createGrid(container, message);
 });
 
 
 
-/* creare funzione endGame per terminare il gioco
+/*
 creare una funzione showBombs per mostrare tutte le bombe
     se gli elementi hanno la classe bomba devo mostrarli
-
-.removeEventListener('click', nameFunction) funziona solo con funzioni callback*/
+*/

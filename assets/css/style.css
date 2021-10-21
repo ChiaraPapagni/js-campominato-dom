@@ -15,9 +15,14 @@ body {
     color: white;
 }
 
-h1 {
-    margin: 2rem 0;
+h1,
+h2 {
+    margin: 1rem 0;
     text-align: center;
+}
+
+h2 {
+    height: 30px;
 }
 
 label {
@@ -53,7 +58,7 @@ Main
     flex-wrap: wrap;
     width: 800px;
     margin: auto;
-    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .cell {
