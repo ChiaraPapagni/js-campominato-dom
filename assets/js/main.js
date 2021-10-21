@@ -39,8 +39,12 @@ function checkLevel(level) {
     return griglia;
 }
 
+
 let grid = checkLevel(levelDom);
 const bombs = generateBombs(grid);
+
+//Creo elemento DOM
+let div = document.createElement('div');
 
 //Creo funzione che crea la griglia
 function createGrid(containerDom) {
@@ -52,7 +56,7 @@ function createGrid(containerDom) {
     for (let i = 1; i <= grid; i++) {
 
         //Creo elemento DOM
-        const div = document.createElement('div');
+        div = document.createElement('div');
         div.className = 'cell';
         containerDom.append(div);
 
@@ -67,9 +71,9 @@ function createGrid(containerDom) {
     }
     console.log(bombs);
 
-    //select all cells
+    //Seleziono tutti gli elementi con classe cell
     const cells = document.getElementsByClassName('cell');
-    //ciclo tra le celle
+    //Scorro le celle
     for (let i = 0; i < cells.length; i++) {
         const element = cells[i];
         element.addEventListener('click', handelClick);
@@ -80,19 +84,18 @@ function createGrid(containerDom) {
 //Funzione che prende il contenuto della cella
 function handelClick() {
     const cell_number = parseInt(this.innerText);
-    //verifica se la cella è una bomba
-    isBomb(cell_number, bombs);
+    if (isBomb(cell_number, bombs)) {
+        this.className += ' red';
+    }
 }
 
-//verifico se una cella è una bomba o no
+//Funzione che verifica se una cella è una bomba o no
 function isBomb(cell_number, bombs) {
     if (bombs.includes(cell_number)) {
         console.log('bomba!');
-    } else {
-        console.log('niente bomba');
-        //contatore score
+        return true;
     }
-    //return false;
+    return false;
 }
 
 //genero numero casuale
