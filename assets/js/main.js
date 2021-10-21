@@ -19,7 +19,7 @@ const container = document.querySelector('.container');
 const levelDom = document.getElementById('level');
 const play = document.getElementById('play');
 
-//Creo funzione che controlla il livello scelto
+//Funzione che controlla il livello scelto
 function checkLevel(level) {
 
     let griglia = 0;
@@ -43,10 +43,8 @@ function checkLevel(level) {
 let grid = checkLevel(levelDom);
 const bombs = generateBombs(grid);
 
-//Creo elemento DOM
-let div = document.createElement('div');
 
-//Creo funzione che crea la griglia
+//Funzione che crea la griglia
 function createGrid(containerDom) {
 
     grid = checkLevel(levelDom);
@@ -56,18 +54,12 @@ function createGrid(containerDom) {
     for (let i = 1; i <= grid; i++) {
 
         //Creo elemento DOM
-        div = document.createElement('div');
+        const div = document.createElement('div');
         div.className = 'cell';
         containerDom.append(div);
 
         //Scrivo in ogni div l'indice
         div.innerHTML = i;
-
-        //Ascolto l'evento click sul div e gli assegno una classe
-        div.addEventListener('click', function () {
-            this.className += ' blue';
-        });
-
     }
     console.log(bombs);
 
@@ -81,29 +73,33 @@ function createGrid(containerDom) {
 
 }
 
+let score = 0;
 //Funzione che prende il contenuto della cella
 function handelClick() {
     const cell_number = parseInt(this.innerText);
     if (isBomb(cell_number, bombs)) {
         this.className += ' red';
+    } else if (!this.classList.contains('blue')) {
+        this.className += ' blue';
+        score++;
     }
 }
 
 //Funzione che verifica se una cella è una bomba o no
 function isBomb(cell_number, bombs) {
     if (bombs.includes(cell_number)) {
-        console.log('bomba!');
+        console.log('Hai calpestato una bomba! Il tuo punteggio è: ' + score);
         return true;
     }
     return false;
 }
 
-//genero numero casuale
+//Funzione che genera numero casuale
 function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//Creo funzione che genera l'array di bombe
+//Funzione che genera l'array di bombe
 function generateBombs(grid) {
     const bombs = [];
     while (bombs.length < 16) {
@@ -123,8 +119,10 @@ play.addEventListener('click', function () {
     createGrid(container);
 });
 
-/* creare funzione endcame per terminare il gioco
-creare una funzione showbombs per mostrare tutte le bombe
+
+
+/* creare funzione endGame per terminare il gioco
+creare una funzione showBombs per mostrare tutte le bombe
     se gli elementi hanno la classe bomba devo mostrarli
 
-.removeEventListner('click', nameFunction) funziona solo con funzioni callback*/
+.removeEventListener('click', nameFunction) funziona solo con funzioni callback*/
