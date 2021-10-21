@@ -5,6 +5,7 @@
     padding: 0;
 }
 
+
 /**************
 Utility
 **************/
@@ -13,12 +14,12 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial',
         sans-serif;
     color: white;
+    text-align: center;
 }
 
 h1,
 h2 {
     margin: 1rem 0;
-    text-align: center;
 }
 
 h2 {
@@ -49,6 +50,7 @@ button {
 button:hover {
     background-color: royalblue;
 }
+
 
 /**************
 Main
@@ -85,4 +87,12 @@ Main
     align-items: center;
     width: 800px;
     margin: auto;
+}
+
+
+/**************
+Footer
+**************/
+footer {
+    margin: 1rem;
 }

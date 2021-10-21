@@ -19,6 +19,7 @@ const container = document.querySelector('.container');
 const levelDom = document.getElementById('level');
 const play = document.getElementById('play');
 const message = document.querySelector('.message');
+const cells = document.getElementsByClassName('cell');
 
 let bombs = [];
 let grid = checkLevel(levelDom);
@@ -134,22 +135,16 @@ function generateBombs(grid) {
     return bombs;
 }
 
+//Funzione che mostra tutte le celle bomba
 function showBombs() {
-    //Seleziono tutti gli elementi con classe red
-    const bombs_to_show = document.getElementsByClassName('bomb');
-    //Scorro le celle
-    for (let i = 0; i < bombs_to_show.length; i++) {
-        //const element = bombs_to_show[i];
-        //element.classList.add('red');
-        bombs_to_show[i].classList.add('red');
+    for (let i = 0; i < bombs.length; i++) {
+        cells[bombs[i]].classList.add('red');
     }
 }
 
-
 //Funzione che termina il gioco
 function endGame() {
-    //Seleziono tutti gli elementi con classe cell
-    const cells = document.getElementsByClassName('cell');
+
     //Scorro le celle
     for (let i = 0; i < cells.length; i++) {
         const element = cells[i];
